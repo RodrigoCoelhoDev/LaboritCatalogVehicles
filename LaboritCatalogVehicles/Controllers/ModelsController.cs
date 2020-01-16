@@ -20,14 +20,20 @@ namespace LaboritCatalogVehicles.Controllers
             _context = context;
         }
 
-        // GET: api/Models
+        /// <summary>
+        /// GetModels returns List of Model
+        /// </summary>        
+        /// <returns>List of Model</returns>  
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Model>>> GetModels()
         {
             return await _context.Models.ToListAsync();
         }
 
-        // GET: api/Models/5
+        /// <summary>
+        /// GetModel with specific ID
+        /// </summary>
+        /// <returns>Return specifc Model</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Model>> GetModel(int id)
         {
@@ -41,10 +47,46 @@ namespace LaboritCatalogVehicles.Controllers
             return model;
         }
 
-        // PUT: api/Models/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        /// <summary>
+        /// GetModelBrand with specific brandId
+        /// </summary>
+        /// <returns>Return specifc Model</returns>
+        [HttpGet("{brandId}")]
+        public async Task<ActionResult<Model>> GetModelBrand(int brandId)
+        {
+            var model = await _context.Models.FindAsync(brandId);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return model;
+        }
+
+        /// <summary>
+        /// Update specific Brand
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /Model/id
+        ///     {
+        ///        "id": 1,
+        ///        "name": "AMAROK CD2.0 16V/S CD2.0 16V TDI 4x2 Die"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">Model ID</param>
+        /// <param name="model">Name Model</param>
+        /// <response code="404">IF product not exists</response>
+        /// <response code="400">Format of product it's incorrect</response>  
+        /// <response code="204">Product updated</response>  
+        /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PutModel(int id, Model model)
         {
             if (id != model.Id)
@@ -73,10 +115,25 @@ namespace LaboritCatalogVehicles.Controllers
             return NoContent();
         }
 
-        // POST: api/Models
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        /// <summary>
+        /// Creates a Model.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Model
+        ///     {
+        ///        "name": "AMAROK CD2.0 16V/S CD2.0 16V TDI 4x2 Die"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="model"></param>
+        /// <returns>A newly created model</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response>  
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Model>> PostModel(Model model)
         {
             _context.Models.Add(model);
@@ -85,7 +142,15 @@ namespace LaboritCatalogVehicles.Controllers
             return CreatedAtAction("GetModel", new { id = model.Id }, model);
         }
 
-        // DELETE: api/Models/5
+        /// <summary>
+        /// Delete Model 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Returns removed Model</response>
+        /// <response code="404">If Model not exists</response>  
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Model>> DeleteModel(int id)
         {

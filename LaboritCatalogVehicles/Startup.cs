@@ -19,7 +19,6 @@ namespace LaboritCatalogVehicles
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CatalogContext>(options => options.UseSqlServer(Configuration["ConnectionString:Catalog"]));
@@ -39,17 +38,11 @@ namespace LaboritCatalogVehicles
                         Email = "rodrigo_web2@hotmail.com",
                         Url = new Uri("https://www.linkedin.com/in/rodrigo-coelho-6523b023/"),
                     },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
-
+                  
                 });
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
